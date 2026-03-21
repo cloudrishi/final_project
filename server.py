@@ -15,8 +15,8 @@ def emotion_detection():
     # Remove dominant_emotion from display dict
     display = {k: v for k, v in result.items() if k != 'dominant_emotion'}
 
-    if (dominant is None):
-        return (f"<b>Invalid text! Please try again!.</b>")
+    if dominant is None:
+        return "<b>Invalid text! Please try again!.</b>"
 
     return (f"For the given statement, the system response is "
         f"'anger': {display['anger']}, 'disgust': {display['disgust']}, "
@@ -28,6 +28,6 @@ def emotion_detection():
 def render_index_page():
     """Render the index page."""
     return render_template("index.html")
-    
+
 if __name__ == "__main__":
     app.run(debug=True)

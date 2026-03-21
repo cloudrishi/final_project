@@ -1,0 +1,9 @@
+************* Module server
+server.py:18:0: C0325: Unnecessary parens after 'if' keyword (superfluous-parens)
+server.py:19:0: C0325: Unnecessary parens after 'return' keyword (superfluous-parens)
+server.py:31:0: C0303: Trailing whitespace (trailing-whitespace)
+server.py:19:16: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
+
+------------------------------------------------------------------
+Your code has been rated at 7.33/10 (previous run: 7.33/10, +0.00)
+
