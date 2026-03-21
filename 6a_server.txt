@@ -1,0 +1,30 @@
+"""Flask application for emotion detection using Watson NLP."""
+from flask import Flask, request, render_template
+from EmotionDetection import emotion_detector
+
+app = Flask(__name__)
+
+@app.route("/emotionDetector")
+def emotion_detection():
+    """Analyze the emotion of the given text and return the result."""
+    text_to_analyze = request.args.get("textToAnalyze", "")
+
+    result = emotion_detector(text_to_analyze)
+
+    dominant = result['dominant_emotion']
+    # Remove dominant_emotion from display dict
+    display = {k: v for k, v in result.items() if k != 'dominant_emotion'}
+
+    return (f"For the given statement, the system response is "
+        f"'anger': {display['anger']}, 'disgust': {display['disgust']}, "
+        f"'fear': {display['fear']}, 'joy': {display['joy']}, "
+        f"'sadness': {display['sadness']}. "
+        f"The dominant emotion is <b>{dominant}</b>.")
+
+@app.route("/")
+def render_index_page():
+    """Render the index page."""
+    return render_template("index.html")
+    
+if __name__ == "__main__":
+    app.run(debug=True)
