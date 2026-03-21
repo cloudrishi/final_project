@@ -36,5 +36,5 @@ def emotion_detector(text_to_analyze):
     return emotion_scores
 
 if __name__ == "__main__":
-    result = emotion_detector("I love this new technology")
+    result = emotion_detector("I hate working long hours")
     print(json.dumps(result, indent=4))
