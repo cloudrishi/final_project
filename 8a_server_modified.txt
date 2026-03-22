@@ -1,9 +1,38 @@
-************* Module server
-server.py:18:0: C0325: Unnecessary parens after 'if' keyword (superfluous-parens)
-server.py:19:0: C0325: Unnecessary parens after 'return' keyword (superfluous-parens)
-server.py:31:0: C0303: Trailing whitespace (trailing-whitespace)
-server.py:19:16: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
+"""Flask application for emotion detection using Watson NLP."""
+from flask import Flask, request, render_template
+from EmotionDetection import emotion_detector
 
-------------------------------------------------------------------
-Your code has been rated at 7.33/10 (previous run: 7.33/10, +0.00)
+app = Flask(__name__)
 
+@app.route("/emotionDetector")
+def emotion_detection():
+    """Analyze the emotion of the given text and return the result."""
+    text_to_analyze = request.args.get("textToAnalyze", "")
+
+    # Check for blank input before calling emotion_detector
+    if text_to_analyze.strip() == "":
+        return "<b>Invalid text! Please try again!.</b>"
+
+    result = emotion_detector(text_to_analyze)
+
+    dominant = result['dominant_emotion']
+    # Remove dominant_emotion from display dict
+    display = {k: v for k, v in result.items() if k != 'dominant_emotion'}
+
+    # Handle None response from emotion_detector (e.g. 400 status)
+    if dominant is None:
+        return "<b>Invalid text! Please try again!.</b>"
+
+    return (f"For the given statement, the system response is "
+        f"'anger': {display['anger']}, 'disgust': {display['disgust']}, "
+        f"'fear': {display['fear']}, 'joy': {display['joy']}, "
+        f"'sadness': {display['sadness']}. "
+        f"The dominant emotion is <b>{dominant}</b>.")
+
+@app.route("/")
+def render_index_page():
+    """Render the index page."""
+    return render_template("index.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
